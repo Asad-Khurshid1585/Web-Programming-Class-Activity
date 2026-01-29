@@ -53,7 +53,6 @@ body {
 .logo {
     height: 50px;
     width: auto;
-    filter: brightness(0) invert(1);
 }
 
 .gallery-name {
@@ -365,7 +364,6 @@ body {
 .about-logo {
     max-width: 200px;
     height: auto;
-    filter: brightness(0) invert(1);
 }
 
 /* ============================================
