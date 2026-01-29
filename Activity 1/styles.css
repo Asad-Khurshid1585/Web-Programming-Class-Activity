@@ -1,0 +1,21 @@
+/* Small, project-specific tweaks to keep the design language but avoid heavy styling */
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Make main expand so footer sticks to bottom (already set inline) */
+main { flex: 1; }
+
+/* Slightly smaller gallery images on small screens */
+.image-gallery img { height: 220px; object-fit: cover; }
+
+/* Navbar logo responsive tweak */
+.navbar-brand img { height: 36px; }
+
+/* Make form cards a little narrower on large screens */
+@media (min-width: 992px) {
+  .card { border-radius: 6px; }
+}
+
+/* Keep the footer text a little lighter */
+footer { font-size: 0.9rem; }
