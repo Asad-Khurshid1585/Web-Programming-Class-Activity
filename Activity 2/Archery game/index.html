@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Div Archery Game</title>
+
+<style>
+  body {
+    margin: 0;
+    background: linear-gradient(to bottom, #87CEEB 0%, #98FB98 100%);
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+  }
+
+  #gameContainer {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  #score {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 20px;
+    border-radius: 25px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    z-index: 10;
+  }
+
+  #level {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 18px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 5px 15px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+
+  #arrows {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 18px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 5px 15px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+
+  #timer {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    font-size: 18px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 5px 15px;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+
+  #gameArea {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Bow */
+  #bow {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    font-size: 60px;
+    transform: translateY(-50%);
+    z-index: 5;
+    transition: transform 0.1s;
+  }
+
+  #arrow {
+    position: absolute;
+    width: 80px;
+    height: 6px;
+    background: linear-gradient(to right, #8B4513, #D2691E);
+    border-radius: 3px;
+    display: none;
+    z-index: 3;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    transform-origin: 10px center;
+  }
+
+  #arrow::before {
+    content: '➤';
+    position: absolute;
+    right: -10px;
+    top: -8px;
+    color: #333;
+    font-size: 16px;
+  }
+
+  #arrow::after {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: -2px;
+    width: 15px;
+    height: 10px;
+    background: linear-gradient(to right, #654321, #8B4513);
+    clip-path: polygon(0% 50%, 100% 0%, 100% 100%);
+  }
+
+  .target {
+    position: absolute;
+    right: 50px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #FF4444, #CC0000);
+    border: 3px solid #990000;
+    box-shadow: 0 0 20px rgba(255, 68, 68, 0.5);
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .target.center {
+    background: radial-gradient(circle, #FFFF44, #CCCC00);
+    border-color: #999900;
+    box-shadow: 0 0 20px rgba(255, 255, 68, 0.5);
+  }
+
+  .target.small {
+    width: 40px;
+    height: 40px;
+  }
+
+  .target.large {
+    width: 80px;
+    height: 80px;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+  }
+
+  .hit-effect {
+    position: absolute;
+    font-size: 24px;
+    color: #FFD700;
+    pointer-events: none;
+    animation: fadeOut 1s ease-out forwards;
+    z-index: 20;
+  }
+
+  @keyframes fadeOut {
+    0% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(2); }
+  }
+
+  #ground {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(to top, #8B4513, #A0522D);
+    z-index: 1;
+  }
+
+  .cloud {
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+  }
+
+  .cloud::before,
+  .cloud::after {
+    content: '';
+    position: absolute;
+    background: white;
+    border-radius: 50%;
+  }
+
+  .cloud:nth-child(1) {
+    top: 20px;
+    left: 10%;
+    width: 60px;
+    height: 40px;
+  }
+
+  .cloud:nth-child(1)::before {
+    top: -15px;
+    left: 10px;
+    width: 40px;
+    height: 30px;
+  }
+
+  .cloud:nth-child(1)::after {
+    top: -10px;
+    left: 35px;
+    width: 50px;
+    height: 35px;
+  }
+
+  .cloud:nth-child(2) {
+    top: 60px;
+    right: 15%;
+    width: 80px;
+    height: 50px;
+  }
+
+  .cloud:nth-child(2)::before {
+    top: -20px;
+    left: 15px;
+    width: 50px;
+    height: 40px;
+  }
+
+  .cloud:nth-child(2)::after {
+    top: -15px;
+    left: 45px;
+    width: 60px;
+    height: 45px;
+  }
+</style>
+</head>
+
+<body>
+
+<div id="gameContainer">
+  <div id="score">Score: 0</div>
+  <div id="level">Level: 1</div>
+  <div id="timer">Time: 60</div>
+  <div id="arrows">Arrows: ∞</div>
+
+  <div id="gameArea">
+    <div id="bow">🏹</div>
+    <div id="arrow"></div>
+    <div id="ground"></div>
+    <div class="cloud"></div>
+    <div class="cloud"></div>
+  </div>
+</div>
+
+<script>
+  const gameContainer = document.getElementById('gameContainer');
+  const scoreDisplay = document.getElementById('score');
+  const levelDisplay = document.getElementById('level');
+  const timerDisplay = document.getElementById('timer');
+  const arrowsDisplay = document.getElementById('arrows');
+  const gameArea = document.getElementById('gameArea');
+  const bow = document.getElementById('bow');
+  const arrow = document.getElementById('arrow');
+
+  let score = 0;
+  let level = 1;
+  let timeLeft = 60;
+  let arrowsLeft = 10;
+  let gameRunning = false;
+  let arrowMoving = false;
+  let targets = [];
+  let targetIdCounter = 0;
+  let mouseX = 0;
+  let mouseY = 0;
+  let shootAngle = 0;
+  let timerInterval;
+
+  const LEVELS = [
+    { targets: 1, speed: 2, points: [10] },
+    { targets: 2, speed: 3, points: [10, 20] },
+    { targets: 3, speed: 4, points: [10, 20, 30] },
+    { targets: 4, speed: 5, points: [10, 20, 30, 50] },
+    { targets: 5, speed: 6, points: [10, 20, 30, 50, 100] }
+  ];
+
+  // Initialize game
+  function initGame() {
+    score = 0;
+    level = 1;
+    timeLeft = 60;
+    arrowsLeft = 10;
+    gameRunning = false;
+    arrowMoving = false;
+    targets = [];
+    targetIdCounter = 0;
+    updateDisplays();
+    clearTargets();
+    startGame();
+  }
+
+  // Start game
+  function startGame() {
+    gameRunning = true;
+    createTargets();
+    startTimer();
+    gameLoop();
+  }
+
+  // Start timer
+  function startTimer() {
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      updateDisplays();
+      
+      if (timeLeft <= 0) {
+        endGame();
+      }
+    }, 1000);
+  }
+
+  // Game over
+  function endGame() {
+    gameRunning = false;
+    clearInterval(timerInterval);
+    // Show game over message
+    alert(`Game Over!\nFinal Score: ${score}\nLevel Reached: ${level}`);
+    setTimeout(() => {
+      initGame();
+    }, 2000);
+  }
+
+  // Update displays
+  function updateDisplays() {
+    scoreDisplay.textContent = `Score: ${score}`;
+    levelDisplay.textContent = `Level: ${level}`;
+    timerDisplay.textContent = `Time: ${timeLeft}`;
+    arrowsDisplay.textContent = `Arrows: ${arrowsLeft}`;
+  }
+
+  // Update score
+  function updateScore(points) {
+    score += points;
+    updateDisplays();
+  }
+
+  function createTargets() {
+    clearTargets();
+    const levelConfig = LEVELS[Math.min(level - 1, LEVELS.length - 1)];
+    
+    for (let i = 0; i < levelConfig.targets; i++) {
+      const target = document.createElement('div');
+      target.className = 'target';
+      target.id = `target-${targetIdCounter++}`;
+      target.dataset.points = levelConfig.points[i] || 10;
+      target.dataset.speed = levelConfig.speed;
+      target.dataset.direction = Math.random() > 0.5 ? 1 : -1;
+      
+      if (Math.random() > 0.7) {
+        target.classList.add(Math.random() > 0.5 ? 'small' : 'large');
+      }
+      
+      const maxTop = window.innerHeight - 200;
+      const minTop = 100;
+      target.style.top = Math.random() * (maxTop - minTop) + minTop + 'px';
+      target.style.right = (50 + i * 100) + 'px';
+      
+      gameArea.appendChild(target);
+      targets.push({
+        element: target,
+        direction: parseInt(target.dataset.direction),
+        speed: parseInt(target.dataset.speed)
+      });
+    }
+  }
+
+  function clearTargets() {
+    targets.forEach(target => {
+      if (target.element.parentNode) {
+        target.element.parentNode.removeChild(target.element);
+      }
+    });
+    targets = [];
+  }
+
+  function moveTargets() {
+    targets.forEach(target => {
+      let top = target.element.offsetTop;
+      const height = target.element.offsetHeight;
+      
+      if (top <= 50 || top >= window.innerHeight - height - 50) {
+        target.direction *= -1;
+      }
+      
+      target.element.style.top = top + (target.speed * target.direction) + 'px';
+    });
+  }
+
+  function shootArrow() {
+    if (arrowMoving || !gameRunning) return;
+    
+    arrowMoving = true;
+    arrowsLeft--;
+    updateDisplays();
+    
+    const bowRect = bow.getBoundingClientRect();
+    const bowCenterX = bowRect.left + bowRect.width / 2;
+    const bowCenterY = bowRect.top + bowRect.height / 2;
+    
+    const deltaX = mouseX - bowCenterX;
+    const deltaY = mouseY - bowCenterY;
+    shootAngle = Math.atan2(deltaY, deltaX);
+    
+    arrow.style.display = 'block';
+    arrow.style.left = bowCenterX + 'px';
+    arrow.style.top = bowCenterY + 'px';
+    arrow.style.transform = `rotate(${shootAngle}rad)`;
+    
+    let arrowX = bowCenterX;
+    let arrowY = bowCenterY;
+    
+    const speed = 12;
+    const velocityX = Math.cos(shootAngle) * speed;
+    const velocityY = Math.sin(shootAngle) * speed;
+    
+    const arrowInterval = setInterval(() => {
+      arrowX += velocityX;
+      arrowY += velocityY;
+      
+      arrow.style.left = arrowX + 'px';
+      arrow.style.top = arrowY + 'px';
+      
+      const hit = checkCollisions(arrowX, arrowY);
+      if (hit) {
+        handleHit(hit);
+        resetArrow();
+        clearInterval(arrowInterval);
+        return;
+      }
+      
+      if (arrowX > window.innerWidth + 100 || arrowX < -100 || 
+          arrowY > window.innerHeight + 100 || arrowY < -100) {
+        resetArrow();
+        clearInterval(arrowInterval);
+        
+        if (targets.length === 0) {
+          increaseDifficulty();
+        } else if (arrowsLeft <= 0) {
+          endGame();
+        }
+      }
+    }, 16);
+  }
+
+  function checkCollisions(arrowX, arrowY) {
+    for (let i = targets.length - 1; i >= 0; i--) {
+      const target = targets[i].element;
+      const targetRect = target.getBoundingClientRect();
+      const arrowRect = arrow.getBoundingClientRect();
+      
+      if (arrowRect.right >= targetRect.left &&
+          arrowRect.left <= targetRect.right &&
+          arrowRect.bottom >= targetRect.top &&
+          arrowRect.top <= targetRect.bottom) {
+        
+        const tipX = arrowX + Math.cos(shootAngle) * 40;
+        const tipY = arrowY + Math.sin(shootAngle) * 40;
+        
+        const centerX = targetRect.left + targetRect.width / 2;
+        const centerY = targetRect.top + targetRect.height / 2;
+        const distance = Math.sqrt((tipX - centerX) ** 2 + (tipY - centerY) ** 2);
+        const radius = targetRect.width / 2;
+        
+        if (distance <= radius) {
+          return target;
+        }
+      }
+    }
+    return null;
+  }
+
+  // Handle target hit
+  function handleHit(targetElement) {
+    const points = parseInt(targetElement.dataset.points);
+    updateScore(points);
+    
+    const hitEffect = document.createElement('div');
+    hitEffect.className = 'hit-effect';
+    hitEffect.textContent = `+${points}`;
+    hitEffect.style.left = targetElement.style.left;
+    hitEffect.style.top = targetElement.style.top;
+    gameArea.appendChild(hitEffect);
+    
+    setTimeout(() => {
+      if (hitEffect.parentNode) {
+        hitEffect.parentNode.removeChild(hitEffect);
+      }
+    }, 1000);
+    
+    targetElement.parentNode.removeChild(targetElement);
+    targets = targets.filter(t => t.element !== targetElement);
+  }
+
+  // Increase difficulty (level up)
+  function increaseDifficulty() {
+    level++;
+    arrowsLeft = Math.max(5, 10 - level);
+    timeLeft = Math.max(30, 60 - (level * 5)); // Decrease time as levels increase
+    updateDisplays();
+    
+    if (level > LEVELS.length) {
+      endGame();
+    } else {
+      setTimeout(() => {
+        createTargets();
+      }, 1000);
+    }
+  }
+
+  function resetArrow() {
+    arrowMoving = false;
+    arrow.style.display = 'none';
+    arrow.style.transform = 'rotate(0rad)';
+    bow.style.transform = 'translateY(-50%)';
+  }
+
+  function gameLoop() {
+    if (!gameRunning) return;
+    
+    moveTargets();
+    requestAnimationFrame(gameLoop);
+  }
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    
+    if (gameRunning && !arrowMoving) {
+      const bowRect = bow.getBoundingClientRect();
+      const bowCenterX = bowRect.left + bowRect.width / 2;
+      const bowCenterY = bowRect.top + bowRect.height / 2;
+      
+      const deltaX = mouseX - bowCenterX;
+      const deltaY = mouseY - bowCenterY;
+      const bowAngle = Math.atan2(deltaY, deltaX);
+      bow.style.transform = `translateY(-50%) rotate(${bowAngle}rad)`;
+    }
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!gameRunning || arrowMoving) return;
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    shootArrow();
+  });
+
+  document.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    if (!gameRunning || arrowMoving) return;
+    mouseX = e.touches[0].clientX;
+    mouseY = e.touches[0].clientY;
+    shootArrow();
+  });
+  document.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    mouseX = e.touches[0].clientX;
+    mouseY = e.touches[0].clientY;
+    
+    if (gameRunning && !arrowMoving) {
+      const bowRect = bow.getBoundingClientRect();
+      const bowCenterX = bowRect.left + bowRect.width / 2;
+      const bowCenterY = bowRect.top + bowRect.height / 2;
+      
+      const deltaX = mouseX - bowCenterX;
+      const deltaY = mouseY - bowCenterY;
+      const bowAngle = Math.atan2(deltaY, deltaX);
+      bow.style.transform = `translateY(-50%) rotate(${bowAngle}rad)`;
+    }
+  });
+
+  initGame();
+</script>
+
+</body>
+</html>
