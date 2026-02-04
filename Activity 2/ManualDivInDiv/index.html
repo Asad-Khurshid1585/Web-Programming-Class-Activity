@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Rookie Page</title>
+    <style>
+        .outer {
+            width: 300px;
+            height: 300px;
+            background-color: pink;
+            border: 2px solid black;
+            position: relative;
+        }
+        .inner {
+            width: 100px;
+            height: 100px;
+            background-color: yellow;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        #moveBtn {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <button id="moveBtn">Click to Move Inner Div</button>
+    <div class="outer">
+        <div class="inner" id="innerDiv"></div>
+    </div>
+
+    <script>
+        document.getElementById('moveBtn').addEventListener('click', function() {
+            var inner = document.getElementById('innerDiv');
+            if (inner.style.left === '200px') {
+                inner.style.left = '10px';
+            } else {
+                inner.style.left = '200px';
+            }
+        });
+    </script>
+</body>
+</html>
