@@ -1,0 +1,78 @@
+/* Professional CSS with modern styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+#moveBtn {
+    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+#moveBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+}
+
+#moveBtn:active {
+    transform: translateY(0);
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.outer {
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(45deg, #74b9ff, #0984e3);
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+.inner {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(45deg, #fdcb6e, #e17055);
+    border-radius: 50%;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.inner.moved {
+    transform: translateX(200px);
+}
