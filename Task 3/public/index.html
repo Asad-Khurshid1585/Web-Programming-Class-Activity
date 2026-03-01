@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login System</title>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: #f1f5f9;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-bottom: 1.75rem;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #0f172a;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 0.6rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            background: transparent;
+            color: #64748b;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .tab-btn.active {
+            background: #3b82f6;
+            color: #fff;
+        }
+
+        /* Forms */
+        .form-section { display: none; }
+        .form-section.active { display: block; }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 0.35rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.65rem 0.9rem;
+            border-radius: 7px;
+            border: 1px solid #334155;
+            background: #0f172a;
+            color: #e2e8f0;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus { border-color: #3b82f6; }
+
+        .btn {
+            width: 100%;
+            padding: 0.7rem;
+            border: none;
+            border-radius: 7px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            background: #3b82f6;
+            color: #fff;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn:hover { background: #2563eb; }
+        .btn:active { transform: scale(0.98); }
+        .btn.danger { background: #ef4444; }
+        .btn.danger:hover { background: #dc2626; }
+
+        /* Toast */
+        #toast {
+            margin-top: 1.25rem;
+            padding: 0.7rem 1rem;
+            border-radius: 7px;
+            font-size: 0.88rem;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        #toast.show { opacity: 1; }
+        #toast.success { background: #14532d; color: #86efac; border: 1px solid #16a34a; }
+        #toast.error   { background: #450a0a; color: #fca5a5; border: 1px solid #dc2626; }
+
+        /* Dashboard */
+        #dashboard-section {
+            display: none;
+            text-align: center;
+        }
+
+        #dashboard-section.active { display: block; }
+
+        .avatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: #3b82f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+        }
+
+        #welcome-msg {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            margin-bottom: 0.4rem;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #1e3a5f;
+            color: #60a5fa;
+            border: 1px solid #2563eb;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+        }
+
+        .divider {
+            border: none;
+            border-top: 1px solid #334155;
+            margin: 1.25rem 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Login System</h1>
+    <p class="subtitle">Express · MongoDB · Sessions</p>
+
+    <!-- Auth Forms -->
+    <div id="auth-section">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+            <button class="tab-btn"        onclick="switchTab('register')">Register</button>
+        </div>
+
+        <!-- Login -->
+        <div class="form-section active" id="tab-login">
+            <label for="login-username">Username</label>
+            <input id="login-username" type="text" placeholder="Enter your username" autocomplete="username" />
+
+            <label for="login-password">Password</label>
+            <input id="login-password" type="password" placeholder="Enter your password" autocomplete="current-password" />
+
+            <button class="btn" onclick="handleLogin()">Sign In</button>
+        </div>
+
+        <!-- Register -->
+        <div class="form-section" id="tab-register">
+            <label for="reg-username">Username</label>
+            <input id="reg-username" type="text" placeholder="Choose a username" autocomplete="username" />
+
+            <label for="reg-password">Password</label>
+            <input id="reg-password" type="password" placeholder="Choose a password" autocomplete="new-password" />
+
+            <button class="btn" onclick="handleRegister()">Create Account</button>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboard-section">
+        <div class="avatar">👤</div>
+        <div id="welcome-msg">Welcome!</div>
+        <span class="badge">Authenticated</span>
+        <hr class="divider" />
+        <button class="btn danger" onclick="handleLogout()">Logout</button>
+    </div>
+
+    <div id="toast"></div>
+</div>
+
+<script>
+    // ── Tab switching ─────────────────────────────────────────────────────────
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach((b, i) =>
+            b.classList.toggle('active', (tab === 'login' ? i === 0 : i === 1))
+        );
+        document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+        document.getElementById('tab-' + tab).classList.add('active');
+        clearToast();
+    }
+
+    // ── Toast notifications ───────────────────────────────────────────────────
+    let toastTimer;
+    function showToast(msg, type = 'success') {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.className = 'show ' + type;
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => { t.className = ''; }, 3500);
+    }
+
+    function clearToast() {
+        const t = document.getElementById('toast');
+        t.className = '';
+    }
+
+    // ── View helpers ──────────────────────────────────────────────────────────
+    function showDashboard(username) {
+        document.getElementById('auth-section').style.display = 'none';
+        document.getElementById('dashboard-section').classList.add('active');
+        document.getElementById('welcome-msg').textContent = 'Welcome, ' + username + '!';
+        clearToast();
+    }
+
+    function showAuth() {
+        document.getElementById('auth-section').style.display = '';
+        document.getElementById('dashboard-section').classList.remove('active');
+    }
+
+    // ── API helpers ───────────────────────────────────────────────────────────
+    async function post(url, body) {
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+        return { ok: res.ok, data: await res.json() };
+    }
+
+    async function get(url) {
+        const res = await fetch(url);
+        return { ok: res.ok, data: await res.json() };
+    }
+
+    // ── Handlers ──────────────────────────────────────────────────────────────
+    async function handleRegister() {
+        const username = document.getElementById('reg-username').value.trim();
+        const password = document.getElementById('reg-password').value;
+        if (!username || !password) return showToast('Please fill in all fields.', 'error');
+
+        const { ok, data } = await post('/register', { username, password });
+        if (ok) {
+            showToast(data.message, 'success');
+            document.getElementById('reg-username').value = '';
+            document.getElementById('reg-password').value = '';
+            setTimeout(() => switchTab('login'), 1200);
+        } else {
+            showToast(data.message, 'error');
+        }
+    }
+
+    async function handleLogin() {
+        const username = document.getElementById('login-username').value.trim();
+        const password = document.getElementById('login-password').value;
+        if (!username || !password) return showToast('Please fill in all fields.', 'error');
+
+        const { ok, data } = await post('/login', { username, password });
+        if (ok) {
+            showToast(data.message, 'success');
+            // Fetch protected dashboard to confirm session
+            const dash = await get('/dashboard');
+            if (dash.ok) showDashboard(username);
+        } else {
+            showToast(data.message, 'error');
+        }
+    }
+
+    async function handleLogout() {
+        const { ok, data } = await get('/logout');
+        if (ok) {
+            showAuth();
+            showToast(data.message, 'success');
+        } else {
+            showToast('Logout failed', 'error');
+        }
+    }
+
+    // ── On load: check if already logged in ───────────────────────────────────
+    (async () => {
+        const { ok, data } = await get('/dashboard');
+        if (ok) {
+            // Extract username from "Welcome <username>"
+            const match = data.message.match(/^Welcome (.+)$/);
+            showDashboard(match ? match[1] : 'User');
+        }
+    })();
+</script>
+</body>
+</html>
