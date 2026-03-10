@@ -1,0 +1,15 @@
+:root{--brand:#2a9d8f;--muted:#666}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#f6f6f6;color:#222}
+
+.site-header{display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;background:var(--brand);color:#fff}
+.site-header .brand{font-weight:700;font-size:1.25rem}
+.nav-links a{color:#fff;margin-left:1rem;text-decoration:none}
+.content{max-width:1000px;margin:2rem auto;padding:0 1rem}
+.page .hero{margin:1rem 0}
+.page .hero img{width:100%;height:300px;object-fit:cover;border-radius:8px}
+.page h2{margin-top:0}
+.site-footer{text-align:center;padding:1rem;background:#eee;color:#333;margin-top:2rem}
+
+@media(max-width:600px){.page .hero img{height:180px}.site-header{padding:0.75rem 1rem}}
+
