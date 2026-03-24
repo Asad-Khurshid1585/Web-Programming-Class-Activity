@@ -1,0 +1,49 @@
+﻿
+.app-container { font-family: sans-serif; text-align: center; background-color: #e0f2f1; min-height: 100vh; padding: 20px; box-sizing: border-box;}
+.header h1 { margin-top: 0; color: #004d40; }
+
+.cricket-ground { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+
+.scoreboard { display: flex; justify-content: center; gap: 30px; background: #004d40; color: white; padding: 15px 30px; border-radius: 8px; width: 80%; max-width: 600px;}
+.score-item { text-align: center; }
+.score-item h2 { margin: 0 0 5px 0; font-size: 1rem; color: #b2dfdb; }
+.score-item p { margin: 0; font-size: 1.5rem; font-weight: bold; }
+
+.pitch-container { width: 80%; max-width: 600px; height: 400px; background-color: #7cb342; background-image: repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(0,0,0,0.05) 40px, rgba(0,0,0,0.05) 80px); border-radius: 50%; border: 3px solid #fff; box-shadow: inset 0 0 0 10px #388e3c; position: relative; overflow: hidden; }
+.pitch { width: 120px; height: 100%; background: #dfd3c3; margin: 0 auto; position: relative; border-left: 2px solid #fff; border-right: 2px solid #fff; }
+.pitch::before, .pitch::after { content: ''; position: absolute; width: 100%; height: 4px; background: white; left: 0; }
+.pitch::before { top: 50px; }
+.pitch::after { bottom: 60px; }
+
+.batsman { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); width: 40px; height: 60px; background: #cddc39; border-radius: 20px 20px 0 0; z-index: 2; transition: transform 0.2s;}
+.bat { width: 10px; height: 40px; background: #8d6e63; position: absolute; right: -15px; bottom: 10px; border-radius: 5px; transform-origin: top left; transform: rotate(15deg); transition: transform 0.2s;}
+.swinging .bat { transform: rotate(-80deg); transition: transform 0.1s; }
+
+.ball { width: 15px; height: 15px; background: #fff; border-radius: 50%; position: absolute; top: 10px; left: 50%; transform: translateX(-50%); box-shadow: 0 2px 4px rgba(0,0,0,0.3); opacity: 0; }
+.bowling-action { animation: bowl 0.5s ease-in forwards; opacity: 1; }
+@keyframes bowl { 0% { top: 10px; transform: scale(0.8) translateX(-50%); } 100% { top: 320px; transform: scale(1.2) translateX(-50%); } }
+
+.stump-set { display: flex; gap: 4px; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 1; }
+.stump { width: 4px; height: 30px; background: #fff; }
+
+.commentary-box { background: #fff; padding: 10px 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 80%; max-width: 600px; font-weight: bold; color: #333;}
+
+.controls { margin-top: 20px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+.strategy-selection { display: flex; gap: 20px; font-size: 1.1rem; }
+.strategy-selection label { cursor: pointer; }
+
+.power-bar-wrapper { position: relative; width: 80%; max-width: 600px; height: 40px; border: 3px solid #333; border-radius: 8px; overflow: hidden; background: #eee;}
+.power-bar { display: flex; height: 100%; width: 100%; position: relative;}
+.power-segment { height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); font-size: 0.9rem; border-right: 1px solid rgba(0,0,0,0.2); }
+.power-segment:last-child { border-right: none; }
+.slider { position: absolute; top: -15px; left: 0%; transform: translateX(-50%); font-size: 24px; color: #000; z-index: 10; font-weight: bold; }
+
+.play-shot-btn { padding: 12px 30px; font-size: 1.2rem; background: #ff5722; color: white; border: none; border-radius: 25px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.2); transition: transform 0.1s; }
+.play-shot-btn:active { transform: scale(0.95); }
+.play-shot-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+.game-over-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 100; color: white; }
+.game-over-modal h2 { font-size: 3rem; margin: 0; color: #ffeb3b; text-shadow: 2px 2px 4px #000;}
+.game-over-modal p { font-size: 1.5rem; margin: 10px 0; }
+.reset-btn { margin-top: 20px; padding: 10px 25px; font-size: 1.2rem; background: #4caf50; color: white; border: none; border-radius: 8px; cursor: pointer; }
+
