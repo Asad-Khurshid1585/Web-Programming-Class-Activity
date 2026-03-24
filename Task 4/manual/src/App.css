@@ -1,0 +1,101 @@
+.site {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f3fff3;
+}
+
+.site-header {
+  text-align: center;
+  padding: 28px 16px;
+  background: linear-gradient(135deg, #1f8f3c, #55b947);
+  color: #ffffff;
+}
+
+.site-header h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.site-header p {
+  margin-top: 8px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px;
+  background: #dff7df;
+  border-bottom: 2px solid #b8e9b8;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: #0f5725;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #8fcf8f;
+  background: #ffffff;
+}
+
+.navbar a.active {
+  background: #1f8f3c;
+  color: #ffffff;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.card {
+  width: 100%;
+  max-width: 640px;
+  background: #ffffff;
+  border: 2px solid #b8e9b8;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 8px 20px rgba(16, 80, 30, 0.1);
+}
+
+.card h2 {
+  margin-top: 0;
+  color: #1a6a2e;
+}
+
+.contact-form {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  font-size: 1rem;
+  padding: 10px;
+  border: 1px solid #8fcf8f;
+  border-radius: 8px;
+}
+
+.contact-form button {
+  margin-top: 8px;
+  padding: 10px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: #218c3a;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.site-footer {
+  text-align: center;
+  padding: 14px 10px;
+  background: #1f8f3c;
+  color: #ffffff;
+}
