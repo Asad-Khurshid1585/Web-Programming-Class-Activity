@@ -164,6 +164,9 @@ export default function App() {
       setGameState("gameover");
       stopSlider();
     } else {
+      posRef.current = 0;
+      dirRef.current = 1;
+      if (sliderRef.current) sliderRef.current.style.left = "0%";
       startSlider();
     }
   };
@@ -235,10 +238,25 @@ export default function App() {
       </header>
 
       <div className="cricket-ground">
-        <div className="scoreboard">
+        <div className="scoreboard" style={{ position: "relative" }}>
+          <div style={{ position: "absolute", left: "20px", top: "50%", transform: "translateY(-50%)", textAlign: "left", fontSize: "0.8rem", color: "#b2dfdb", lineHeight: "1.2" }}>
+            <div>Asad Khurshid</div>
+            <div>22i-1585</div>
+            <div>Section C</div>
+          </div>
           <div className="score-item"><h2>Score</h2><p>{runs}/{wickets}</p></div>
           <div className="score-item"><h2>Overs</h2><p>{oversStr}</p></div>
           <div className="score-item"><h2>Balls Left</h2><p>{MAX_BALLS - balls}</p></div>
+          <div className="score-item" style={{ position: "absolute", right: "20px", top: "40%", transform: "translateY(-50%)" }}>
+            <button 
+              onClick={resetGame} 
+              className="reset-btn"
+              disabled={isBowling}
+              style={{ backgroundColor: "#b2dfdb", color: "#004d40", padding: "6px 12px", border: "none", borderRadius: "4px", cursor: "pointer", fontWeight: "bold", fontSize: "13px" }}
+            >
+              Restart
+            </button>
+          </div>
         </div>
 
         <div className="pitch-container">
