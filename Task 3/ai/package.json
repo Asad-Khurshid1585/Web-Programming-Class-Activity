@@ -1,0 +1,28 @@
+{
+  "name": "task-3-login-system",
+  "version": "1.0.0",
+  "description": "Login system using Express, MongoDB (Mongoose), Sessions, and JavaScript Class",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "express",
+    "mongoose",
+    "session",
+    "login"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-session": "^1.18.0",
+    "mongoose": "^8.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}
