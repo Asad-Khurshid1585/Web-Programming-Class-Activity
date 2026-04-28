@@ -146,7 +146,7 @@ export default function App() {
     }
     return () => stopSlider();
   }, [gameState, battingStyle]);
-
+x
   const processTurnOutcome = (selectedOutcome) => {
     const newRuns = runs + selectedOutcome.runs;
     const newWickets = wickets + (selectedOutcome.isWicket ? 1 : 0);
